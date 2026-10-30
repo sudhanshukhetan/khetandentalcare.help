@@ -26,7 +26,8 @@ export async function POST(req) {
     }
     const cleanPhone = phoneValidation.cleanPhone;
 
-    if (!password || password.length < 8) {
+    const cleanPassword = String(password).trim();
+    if (!cleanPassword || cleanPassword.length < 8) {
       return NextResponse.json(
         { error: "Password must be at least 8 characters long." },
         { status: 400 }
@@ -57,7 +58,7 @@ export async function POST(req) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(cleanPassword, 12);
     const user = await User.create({
       name: cleanName,
       email: cleanEmail,
