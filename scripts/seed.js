@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
@@ -13,23 +12,13 @@ function generateId() {
 }
 
 async function seed() {
-  const passwordHash = await bcrypt.hash("Password@123", 10);
-  const patientId = generateId();
-  const demoUser = {
-    _id: patientId,
-    name: "Rahul Bora",
-    email: "rahul@gmail.com",
-    phone: "9864012345",
-    passwordHash,
-    role: "patient",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
   const timeSlots = [];
-  const times = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"];
+  const times = [
+    "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+    "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"
+  ];
 
-  // Generate slots for today and next 7 days
+  // Generate real open slots for today and next 7 days
   const today = new Date();
   for (let d = 0; d < 8; d++) {
     const cur = new Date(today);
@@ -48,31 +37,15 @@ async function seed() {
     }
   }
 
-  // Book one slot as a demonstration
-  const bookedSlot = timeSlots.find(s => s.date === today.toISOString().slice(0, 10) && s.time === "11:00") || timeSlots[2];
-  bookedSlot.isBooked = true;
-
-  const demoAppt = {
-    _id: generateId(),
-    user: patientId,
-    slot: bookedSlot._id,
-    treatment: "Scaling & Teeth Cleaning",
-    reason: "Routine dental checkup and teeth scaling",
-    status: "confirmed",
-    smsSent: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
+  // Pure empty states for genuine patients and appointments
   const db = {
-    users: [demoUser],
+    users: [],
     timeSlots,
-    appointments: [demoAppt],
+    appointments: [],
   };
 
   fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf8");
-  console.log(`Seeded ${timeSlots.length} slots, 1 demo patient, and 1 appointment to data/db.json.`);
+  console.log(`Initialized database with ${timeSlots.length} open consultation slots, 0 mock patients, and 0 mock appointments.`);
 }
 
 seed().catch(console.error);
-

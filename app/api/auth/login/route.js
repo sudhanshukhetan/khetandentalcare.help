@@ -7,16 +7,22 @@ import { generateFiveDigitOtp, saveHostOtp, verifyHostOtp } from "@/lib/otp";
 import { sendHostOtp } from "@/lib/sms";
 import { validateEmail, validatePhone } from "@/lib/validation";
 
-const fail = (msg = "Incorrect email/mobile or password.") =>
-  NextResponse.json({ error: msg }, { status: 401 });
+// Generic authentication error that protects against user enumeration
+const genericAuthError = () =>
+  NextResponse.json({ error: "Invalid credentials. Please verify your details and try again." }, { status: 401 });
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { email = "", password = "", otp = "" } = body;
+    const body = await req.json().catch(() => ({}));
+    const { email = "", identifier = "", password = "", otp = "" } = body;
 
-    const identifier = String(email).trim().toLowerCase();
+    // Support both 'identifier' and 'email' fields from login requests
+    const rawInput = String(identifier || email).trim();
     const pass = String(password).trim();
+
+    if (!rawInput) {
+      return NextResponse.json({ error: "Please enter your email or 10-digit mobile number." }, { status: 400 });
+    }
 
     const adminEmail = (process.env.ADMIN_EMAIL || "dr.prachikhetan.bds18@gmail.com").toLowerCase().trim();
     let adminHash = (process.env.ADMIN_PASSWORD_HASH || "").replace(/^['"]|['"]$/g, "");
@@ -25,13 +31,15 @@ export async function POST(req) {
     }
     const hostPhone = (process.env.CLINIC_PHONE || "9101616156").replace(/\D/g, "").slice(-10);
 
+    const inputLower = rawInput.toLowerCase();
+
     // ==========================================
     // 1. HOST / CLINIC ADMIN LOGIN FLOW
     // ==========================================
-    if (identifier === adminEmail) {
+    if (inputLower === adminEmail || rawInput === hostPhone) {
       // Stage 2: Host Submits 5-Digit OTP
       if (otp) {
-        const verifyResult = verifyHostOtp(identifier, otp);
+        const verifyResult = verifyHostOtp(adminEmail, otp);
         if (!verifyResult.ok) {
           return NextResponse.json({ error: verifyResult.error }, { status: 401 });
         }
@@ -48,10 +56,10 @@ export async function POST(req) {
       }
 
       const isPasswordMatch = await bcrypt.compare(pass, adminHash);
-      if (!isPasswordMatch) return fail();
+      if (!isPasswordMatch) return genericAuthError();
 
       const generatedOtp = generateFiveDigitOtp();
-      saveHostOtp(identifier, generatedOtp, { role: "admin", phone: hostPhone });
+      saveHostOtp(adminEmail, generatedOtp, { role: "admin", phone: hostPhone });
 
       // Dispatch OTP to clinic mobile number
       await sendHostOtp({ phone: hostPhone, otp: generatedOtp });
@@ -75,36 +83,53 @@ export async function POST(req) {
     await db();
 
     let user = null;
-    if (identifier.includes("@")) {
-      const emailValidation = validateEmail(identifier);
+    if (rawInput.includes("@")) {
+      const emailValidation = validateEmail(rawInput);
       if (!emailValidation.isValid) {
         return NextResponse.json({ error: emailValidation.error }, { status: 400 });
       }
       user = await User.findOne({ email: emailValidation.cleanEmail });
     } else {
-      const phoneValidation = validatePhone(identifier);
+      const phoneValidation = validatePhone(rawInput);
       if (!phoneValidation.isValid) {
         return NextResponse.json({ error: phoneValidation.error }, { status: 400 });
       }
       user = await User.findOne({ phone: phoneValidation.cleanPhone });
     }
 
+    // Consistent timing and generic error if user does not exist
     if (!user) {
-      return fail("No patient account found with these details. Please create an account.");
+      // Fake compare to maintain constant time resistance to timing attacks
+      await bcrypt.compare(pass, "$2a$12$e8z90e09fe09wf0e9wf0e9wfe09wf0e9wfe09wf0e9wf0e9wfe09w");
+      return genericAuthError();
     }
 
     const isMatch = await bcrypt.compare(pass, user.passwordHash);
     if (!isMatch) {
-      return fail();
+      return genericAuthError();
     }
 
-    const res = NextResponse.json({ role: "patient", ok: true, name: user.name });
-    setSessionCookie(res, await signSession({ uid: String(user._id), role: "patient", name: user.name }));
+    // Patient login successful -> issue session cookie
+    const res = NextResponse.json({
+      role: user.role || "patient",
+      ok: true,
+      name: user.name,
+    });
+
+    setSessionCookie(
+      res,
+      await signSession({
+        uid: String(user._id),
+        role: user.role || "patient",
+        name: user.name,
+      })
+    );
+
     return res;
   } catch (err) {
-    console.error("[Login API Exception]:", err);
+    console.error("[Login API Route Exception]:", err);
     return NextResponse.json(
-      { error: "A server connection error occurred during login. Please try again." },
+      { error: "A server connection error occurred. Please try again." },
       { status: 500 }
     );
   }

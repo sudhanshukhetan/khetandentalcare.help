@@ -14,7 +14,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal/10 text-teal text-xs font-bold uppercase tracking-wider mb-6">
-              <span className="w-2 h-2 rounded-full bg-teal animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-teal animate-pulse" aria-hidden="true"></span>
               Dr. Prachi Khetan, BDS · Raha New Charali
             </div>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-ink tracking-tight leading-[1.05]">
@@ -35,23 +35,23 @@ export default function Home() {
                 href="tel:9101616156"
                 className="px-6 py-3.5 rounded-lg bg-white border border-ink/20 text-ink font-bold text-base hover:bg-mist transition-all flex items-center gap-2"
               >
-                <span>📞</span> Call 9101616156
+                <span aria-hidden="true">📞</span> Call 9101616156
               </a>
             </div>
 
             {/* Trust Badges */}
             <div className="mt-12 pt-8 border-t border-ink/10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-medium text-ink/75">
               <div className="flex items-center gap-2">
-                <span className="text-teal text-base">✓</span> 100% Painless Anesthetics
+                <span className="text-teal text-base" aria-hidden="true">✓</span> 100% Painless Anesthetics
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-teal text-base">✓</span> Fellowship in Implants
+                <span className="text-teal text-base" aria-hidden="true">✓</span> Fellowship in Implants
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-teal text-base">✓</span> Autoclaved Sterilization
+                <span className="text-teal text-base" aria-hidden="true">✓</span> Autoclaved Sterilization
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-teal text-base">✓</span> Clear Fixed Pricing
+                <span className="text-teal text-base" aria-hidden="true">✓</span> Clear Fixed Pricing
               </div>
             </div>
           </div>
@@ -62,7 +62,10 @@ export default function Home() {
       <section id="doctor" className="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-mist">
         <div className="grid md:grid-cols-[1fr_1.8fr] gap-12 items-center">
           <div className="bg-mist/70 p-8 rounded-3xl border border-mist text-center space-y-4">
-            <div className="w-32 h-32 mx-auto rounded-full bg-teal text-white flex items-center justify-center text-5xl shadow-md border-4 border-white font-serif">
+            <div
+              aria-hidden="true"
+              className="w-32 h-32 mx-auto rounded-full bg-teal text-white flex items-center justify-center text-5xl shadow-md border-4 border-white font-serif"
+            >
               👩‍⚕️
             </div>
             <div>
@@ -98,10 +101,12 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-4 pt-1">
                 <a href="tel:9101616156" className="text-teal font-bold hover:underline">
-                  📞 9101616156
+                  <span aria-hidden="true">📞</span> 9101616156
                 </a>
                 <span>·</span>
-                <span className="font-medium text-ink">dr.prachikhetan.bds18@gmail.com</span>
+                <a href="mailto:dr.prachikhetan.bds18@gmail.com" className="font-medium text-ink hover:underline">
+                  dr.prachikhetan.bds18@gmail.com
+                </a>
               </div>
             </div>
           </div>
@@ -123,7 +128,7 @@ export default function Home() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm">
-              <div className="text-3xl mb-3">🛡️</div>
+              <div className="text-3xl mb-3" aria-hidden="true">🛡️</div>
               <h4 className="font-bold text-ink text-base">Sterilization Protocol</h4>
               <p className="text-xs text-ink/70 mt-2 leading-relaxed">
                 Hospital-grade autoclave sterilization for all surgical and restorative instruments to prevent cross-infection.
@@ -131,7 +136,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm">
-              <div className="text-3xl mb-3">🔍</div>
+              <div className="text-3xl mb-3" aria-hidden="true">🔍</div>
               <h4 className="font-bold text-ink text-base">Digital Scanning</h4>
               <p className="text-xs text-ink/70 mt-2 leading-relaxed">
                 High-precision intraoral digital scanning and putty impressions for exact fitting crowns, bridges, and dentures.
@@ -139,7 +144,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm">
-              <div className="text-3xl mb-3">💉</div>
+              <div className="text-3xl mb-3" aria-hidden="true">💉</div>
               <h4 className="font-bold text-ink text-base">Painless Procedures</h4>
               <p className="text-xs text-ink/70 mt-2 leading-relaxed">
                 Advanced topical numbing gels and fine-gauge anesthesia so even root canals and extractions are virtually painless.
@@ -147,7 +152,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm">
-              <div className="text-3xl mb-3">🤝</div>
+              <div className="text-3xl mb-3" aria-hidden="true">🤝</div>
               <h4 className="font-bold text-ink text-base">Zero Surprises</h4>
               <p className="text-xs text-ink/70 mt-2 leading-relaxed">
                 We confirm exact treatment fees with you during your initial consultation before beginning any procedure.
@@ -157,44 +162,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PATIENT REVIEWS */}
+      {/* CLINICAL PROTOCOLS & PATIENT CARE (Replaced Mock Reviews with Genuine Patient Guidance) */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
         <div className="text-center max-w-xl mx-auto mb-14">
           <span className="text-xs font-bold text-teal uppercase tracking-widest bg-teal/10 px-3 py-1 rounded-full">
-            Patient Stories
+            Patient Care Pathway
           </span>
-          <h2 className="text-3xl font-extrabold text-ink mt-3">What Our Patients Say</h2>
+          <h2 className="text-3xl font-extrabold text-ink mt-3">What to Expect at Your Visit</h2>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm space-y-3">
-            <div className="text-amber-400 text-sm">★★★★★</div>
-            <p className="text-sm text-ink/80 italic">
-              "I was terrified of getting a root canal done. Dr. Prachi explained each step so calmly and the entire procedure was completely painless. Highly recommended in Raha!"
-            </p>
-            <div className="text-xs font-bold text-ink pt-2 border-t border-mist">
-              – Anupam B., Raha
+            <div className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center font-bold text-sm">
+              01
             </div>
+            <h4 className="font-bold text-ink text-lg">1. Thorough Consultation</h4>
+            <p className="text-xs sm:text-sm text-ink/75 leading-relaxed">
+              Dr. Prachi listens carefully to your concerns, conducts a gentle oral examination, and identifies root causes of tooth sensitivity or pain.
+            </p>
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm space-y-3">
-            <div className="text-amber-400 text-sm">★★★★★</div>
-            <p className="text-sm text-ink/80 italic">
-              "Got teeth cleaning and a composite filling done. The clinic is extremely clean, equipment is modern, and pricing is very reasonable with no hidden costs."
-            </p>
-            <div className="text-xs font-bold text-ink pt-2 border-t border-mist">
-              – Dimpal K., Nagaon
+            <div className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center font-bold text-sm">
+              02
             </div>
+            <h4 className="font-bold text-ink text-lg">2. Transparent Treatment Plan</h4>
+            <p className="text-xs sm:text-sm text-ink/75 leading-relaxed">
+              We present clinical options clearly with upfront costs, recovery timelines, and alternatives so you can make confident, informed decisions.
+            </p>
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-mist shadow-sm space-y-3">
-            <div className="text-amber-400 text-sm">★★★★★</div>
-            <p className="text-sm text-ink/80 italic">
-              "Booking an appointment online was seamless. We didn't have to wait in a crowded clinic. Dr. Prachi is very patient with elderly patients."
-            </p>
-            <div className="text-xs font-bold text-ink pt-2 border-t border-mist">
-              – Ramesh S., Chaparmukh
+            <div className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center font-bold text-sm">
+              03
             </div>
+            <h4 className="font-bold text-ink text-lg">3. Gentle Care & Follow-Up</h4>
+            <p className="text-xs sm:text-sm text-ink/75 leading-relaxed">
+              Experience comfortable procedures with modern numbing techniques and clear post-treatment guidance to maintain optimal long-term oral health.
+            </p>
           </div>
         </div>
       </section>
@@ -229,7 +234,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="px-5 py-2.5 rounded-lg bg-ink text-white font-bold text-sm hover:bg-ink/90 shadow-sm"
               >
-                🗺️ Get Google Maps Directions
+                <span aria-hidden="true">🗺️</span> Get Google Maps Directions
               </a>
               <a
                 href="tel:9101616156"
@@ -255,7 +260,9 @@ export default function Home() {
               </div>
               <div>
                 <span className="text-xs text-ink/50 block font-medium">Email:</span>
-                <span className="font-medium text-ink">dr.prachikhetan.bds18@gmail.com</span>
+                <a href="mailto:dr.prachikhetan.bds18@gmail.com" className="font-medium text-ink hover:underline block">
+                  dr.prachikhetan.bds18@gmail.com
+                </a>
               </div>
               <div>
                 <span className="text-xs text-ink/50 block font-medium">Address:</span>
@@ -289,7 +296,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* FLOATING QUICK CONTACT (Mobile & Desktop) */}
+      {/* FLOATING QUICK CONTACT (WhatsApp) */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-2.5">
         <a
           href="https://wa.me/919101616156?text=Hello%20Dr.%20Prachi,%20I%20would%20like%20to%20inquire%20about%20dental%20treatment."
@@ -298,7 +305,7 @@ export default function Home() {
           className="w-13 h-13 px-4 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xl flex items-center gap-2 hover:scale-105 transition-all"
           title="Chat with clinic on WhatsApp"
         >
-          <span className="text-base">💬</span>
+          <span className="text-base" aria-hidden="true">💬</span>
           <span className="hidden sm:inline">WhatsApp Us</span>
         </a>
       </div>
