@@ -1,0 +1,818 @@
+{
+  "users": [
+    {
+      "_id": "b7cb8ccb039c3295ee7c43f3",
+      "name": "Rahul Bora",
+      "email": "rahul@gmail.com",
+      "phone": "9864012345",
+      "passwordHash": "$2a$10$J92bHTpeFm3gbO1rse6sveIW/kd0rd8/NppZNjTOpTAxQ/wLGkRm6",
+      "role": "patient",
+      "createdAt": "2026-10-30T13:20:34.546Z",
+      "updatedAt": "2026-10-30T13:20:34.551Z"
+    },
+    {
+      "_id": "49a643a19b8eb95769a1e933",
+      "name": "Priya Das",
+      "email": "priya@example.com",
+      "phone": "9876543211",
+      "passwordHash": "$2a$12$7HIFiBvfaXAgiAKTgrcRP.zrmnF9sC44O2acb9e7TaejJ25knD2tO",
+      "role": "patient",
+      "createdAt": "2026-10-30T13:40:01.326Z",
+      "updatedAt": "2026-10-30T13:40:01.326Z"
+    }
+  ],
+  "timeSlots": [
+    {
+      "_id": "826679bc647c50578a48392c",
+      "date": "2026-10-30",
+      "time": "10:00",
+      "isBooked": true,
+      "createdAt": "2026-10-30T13:20:34.551Z",
+      "updatedAt": "2026-10-30T13:40:26.126Z"
+    },
+    {
+      "_id": "a219adb9c49eab26c1275b04",
+      "date": "2026-10-30",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.551Z",
+      "updatedAt": "2026-10-30T13:20:34.551Z"
+    },
+    {
+      "_id": "35266ae0dafd2a17bbfbcbf5",
+      "date": "2026-10-30",
+      "time": "11:00",
+      "isBooked": true,
+      "createdAt": "2026-10-30T13:20:34.551Z",
+      "updatedAt": "2026-10-30T13:20:34.551Z"
+    },
+    {
+      "_id": "029d9dca4119fced81da75a3",
+      "date": "2026-10-30",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.551Z",
+      "updatedAt": "2026-10-30T13:20:34.551Z"
+    },
+    {
+      "_id": "7efe1a99618f0f3b1b9a7b62",
+      "date": "2026-10-30",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.551Z",
+      "updatedAt": "2026-10-30T13:20:34.551Z"
+    },
+    {
+      "_id": "dbdba0e24ba49c3f6ca7500a",
+      "date": "2026-10-30",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.551Z",
+      "updatedAt": "2026-10-30T13:20:34.551Z"
+    },
+    {
+      "_id": "8684ad3de13b06d73b91c790",
+      "date": "2026-10-30",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "78c8eca96d11ff83be1a3389",
+      "date": "2026-10-30",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "c683b6c066af68be473cb731",
+      "date": "2026-10-30",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2c83dcb828cb345a005817aa",
+      "date": "2026-10-30",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "0fc9c7484a4a4ec4f5eb2666",
+      "date": "2026-10-30",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "3393c4dfd9d8706ae7426daf",
+      "date": "2026-10-30",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "ad66ff7ea93a77d299438fc8",
+      "date": "2026-10-31",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2f66300a401380cf84fdb4b1",
+      "date": "2026-10-31",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2db164789bf11c6303df85a8",
+      "date": "2026-10-31",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "ede51d82c13ec06418b94265",
+      "date": "2026-10-31",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "40ae643a81f38273bafe2031",
+      "date": "2026-10-31",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "e9960f0e059281598ae79b13",
+      "date": "2026-10-31",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "8e6a5d7e525254825350c099",
+      "date": "2026-10-31",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "59b3226847470956e3ea6fe4",
+      "date": "2026-10-31",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "3fb9fd8e8d56420090e3af1c",
+      "date": "2026-10-31",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b65bed6bda8d55f576057a8f",
+      "date": "2026-10-31",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "c207f8cec3d9e0b522f7a807",
+      "date": "2026-10-31",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "3e5c88135872caf1b5a19b15",
+      "date": "2026-10-31",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b5b64a5b420ce6c41150acd6",
+      "date": "2026-11-01",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "4c16c8848249531d76fac9c7",
+      "date": "2026-11-01",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b2ae0cda5a1f8e0c8ca2c8e8",
+      "date": "2026-11-01",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "9732d3451a6a4e6be54d3e52",
+      "date": "2026-11-01",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2d0aa377fc5353751203a3b0",
+      "date": "2026-11-01",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "017a815dc06e5e50e227c92b",
+      "date": "2026-11-01",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "d79ea23725f8b4c7b75b0b1d",
+      "date": "2026-11-01",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "a29c0ea81a5de0b1c0f2d01c",
+      "date": "2026-11-01",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "228186bc60f2dbfd27179a13",
+      "date": "2026-11-01",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "ef6bf15454a5e32cb1179770",
+      "date": "2026-11-01",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "0a1561f6fc3254f0c118fdc4",
+      "date": "2026-11-01",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "06fedf5ebd5978ea0a75eaec",
+      "date": "2026-11-01",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "97202a869ae98a6dd4a0f621",
+      "date": "2026-11-02",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "9fd7f81a7001010c221705df",
+      "date": "2026-11-02",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "1a161ffeefb93100f61a6952",
+      "date": "2026-11-02",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "397e16edf93f78c9b22e25f0",
+      "date": "2026-11-02",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2f9a044ac74a7f0288415155",
+      "date": "2026-11-02",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "c66a1cfef6081d5b3584af3d",
+      "date": "2026-11-02",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "7468b8a1eda529a24bfe5b84",
+      "date": "2026-11-02",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "810a0123b9ea3a3922d07a5c",
+      "date": "2026-11-02",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "d48e8b6125481c6bc014ad90",
+      "date": "2026-11-02",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "d11418905f5ef721a1b027fe",
+      "date": "2026-11-02",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b2bbd2810338292c82293b58",
+      "date": "2026-11-02",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "8c947109a215ebf068f4c7d6",
+      "date": "2026-11-02",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "03980c00a3e2bea0786da90a",
+      "date": "2026-11-03",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "9d1647a53913ba13e6406017",
+      "date": "2026-11-03",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "eed606d898e47cdac0907082",
+      "date": "2026-11-03",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "75860bd5e0251573b0ae3cdb",
+      "date": "2026-11-03",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "9a7d9eb6564e2459ab75b1ab",
+      "date": "2026-11-03",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "4c7d23355c58689d19a7d66f",
+      "date": "2026-11-03",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "e0647e3c0db78c6173ff83b2",
+      "date": "2026-11-03",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "ec758c24984fef5d296fa754",
+      "date": "2026-11-03",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "0485e8291fa0cadcd2fefc9e",
+      "date": "2026-11-03",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "1fe7afb57c478bcb58852e1c",
+      "date": "2026-11-03",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b8f5fa217be2603a9c6768d0",
+      "date": "2026-11-03",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2a197a41ee88fa4dc45cb390",
+      "date": "2026-11-03",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b2b768eafc9f31a1f9c6ca77",
+      "date": "2026-11-04",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "663509e6eb335446b5e08b71",
+      "date": "2026-11-04",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "fecffbad3dbd774914932afb",
+      "date": "2026-11-04",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "56b0d8c76151719515334967",
+      "date": "2026-11-04",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "5567e84360723e0cbb1c3b64",
+      "date": "2026-11-04",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "6416db009ebb395cf66c102f",
+      "date": "2026-11-04",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "0043e466b7e8c61de0a41769",
+      "date": "2026-11-04",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "0c84f7ac58a650ec56fd10b6",
+      "date": "2026-11-04",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "4c501160bd60023697e3a141",
+      "date": "2026-11-04",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "97c601f6c069dc6dbdb6ff79",
+      "date": "2026-11-04",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "ef5a1932cea5763bf075a732",
+      "date": "2026-11-04",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "470476c5d33a93c757d0138f",
+      "date": "2026-11-04",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "cb20be0bb1180f3176789542",
+      "date": "2026-11-05",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "ce8a35615221289c701efbf8",
+      "date": "2026-11-05",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "d61b1a7a10fdd1874fae89d6",
+      "date": "2026-11-05",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "56f349ac34f187eb2a8f882a",
+      "date": "2026-11-05",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "c52b4351a69f8b66f4b99885",
+      "date": "2026-11-05",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "1961b4cb8b9f96b3dd7f4c40",
+      "date": "2026-11-05",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "77732fc83350abb82827b82b",
+      "date": "2026-11-05",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "833f6702b661acfa161750a9",
+      "date": "2026-11-05",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "40dd5c590cf0544ec11f9c1a",
+      "date": "2026-11-05",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "e356d351acfe981f0e831296",
+      "date": "2026-11-05",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "8f7e06a7e460a097ac037dd7",
+      "date": "2026-11-05",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "c20d986573d841d2ba7510a2",
+      "date": "2026-11-05",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "2b47461e207f5fc455ae2c15",
+      "date": "2026-11-06",
+      "time": "10:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b92f3210741d70226ab71c09",
+      "date": "2026-11-06",
+      "time": "10:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "b55b8abed5470f480bfffae6",
+      "date": "2026-11-06",
+      "time": "11:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "6c4193bf0534ab744c671358",
+      "date": "2026-11-06",
+      "time": "11:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "9d93c336ac541c27eea4197e",
+      "date": "2026-11-06",
+      "time": "12:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "c6bb060285818193a78662e8",
+      "date": "2026-11-06",
+      "time": "12:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "e5adf46990109bde3ddbe922",
+      "date": "2026-11-06",
+      "time": "16:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "1a617d9f5d4b9a7b6ee2c7f0",
+      "date": "2026-11-06",
+      "time": "16:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "38643e09309b2f7fbb46a95b",
+      "date": "2026-11-06",
+      "time": "17:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "40616ffaa91ca775ff60d3d9",
+      "date": "2026-11-06",
+      "time": "17:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "31fe3e17a2649fc87c79c42f",
+      "date": "2026-11-06",
+      "time": "18:00",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "71048e4e41ff2e9af61ab4a9",
+      "date": "2026-11-06",
+      "time": "18:30",
+      "isBooked": false,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    }
+  ],
+  "appointments": [
+    {
+      "_id": "6ac3d2965dbd70f2e26e1c9d",
+      "user": "b7cb8ccb039c3295ee7c43f3",
+      "slot": "35266ae0dafd2a17bbfbcbf5",
+      "treatment": "Scaling & Teeth Cleaning",
+      "reason": "Routine dental checkup and teeth scaling",
+      "status": "confirmed",
+      "smsSent": true,
+      "createdAt": "2026-10-30T13:20:34.552Z",
+      "updatedAt": "2026-10-30T13:20:34.552Z"
+    },
+    {
+      "_id": "dea37673149486d46a7b66ba",
+      "user": "49a643a19b8eb95769a1e933",
+      "slot": "826679bc647c50578a48392c",
+      "reason": "Tooth sensitivity and ache",
+      "treatment": "Root Canal Treatment (RCT)",
+      "status": "confirmed",
+      "smsSent": true,
+      "createdAt": "2026-10-30T13:40:26.126Z",
+      "updatedAt": "2026-10-30T13:40:26.127Z"
+    }
+  ]
+}
