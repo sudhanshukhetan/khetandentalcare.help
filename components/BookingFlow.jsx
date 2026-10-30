@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 
 const TREATMENTS = [
@@ -15,7 +15,7 @@ const TREATMENTS = [
   { id: "denture", name: "Complete / Partial Dentures (CD/RPD)", fee: "Case Dependent" },
 ];
 
-export default function BookingFlow() {
+export default function BookingFlow({ sessionUser }) {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState("");
@@ -42,40 +42,52 @@ export default function BookingFlow() {
 
   useEffect(() => {
     loadSlots();
-    const interval = setInterval(loadSlots, 20000); // 20s auto-refresh
+    const interval = setInterval(loadSlots, 15000);
     return () => clearInterval(interval);
   }, []);
 
-  const dates = [...new Set(slots.map((s) => s.date))].sort();
+  // Compute unique sorted dates using useMemo to avoid re-triggering effects
+  const dates = useMemo(() => {
+    return [...new Set(slots.map((s) => s.date))].sort();
+  }, [slots]);
 
   useEffect(() => {
-    if (!date && dates.length > 0) {
+    if (dates.length > 0 && (!date || !dates.includes(date))) {
       setDate(dates[0]);
     }
   }, [dates, date]);
 
-  const timesForDate = slots.filter((s) => s.date === date);
+  const timesForDate = useMemo(() => {
+    return slots.filter((s) => s.date === date);
+  }, [slots, date]);
 
   // Split into Morning and Evening sessions
-  const morningTimes = timesForDate.filter((s) => s.time < "14:00");
-  const eveningTimes = timesForDate.filter((s) => s.time >= "14:00");
+  const morningTimes = useMemo(() => timesForDate.filter((s) => s.time < "14:00"), [timesForDate]);
+  const eveningTimes = useMemo(() => timesForDate.filter((s) => s.time >= "14:00"), [timesForDate]);
 
+  // Accurate calendar label for local dates
   const formatDateLabel = (dStr) => {
     if (!dStr) return "";
     try {
-      const d = new Date(dStr + "T00:00:00");
-      const today = new Date().toISOString().slice(0, 10);
-      const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+      const parts = dStr.split("-").map(Number);
+      const d = new Date(parts[0], parts[1] - 1, parts[2]);
+
+      const now = new Date();
+      const todayYear = now.getFullYear();
+      const todayMonth = now.getMonth();
+      const todayDate = now.getDate();
+
+      const isToday = parts[0] === todayYear && parts[1] - 1 === todayMonth && parts[2] === todayDate;
+      const tom = new Date(todayYear, todayMonth, todayDate + 1);
+      const isTomorrow = parts[0] === tom.getFullYear() && parts[1] - 1 === tom.getMonth() && parts[2] === tom.getDate();
 
       const dayName = d.toLocaleDateString("en-IN", { weekday: "short" });
       const dayNum = d.getDate();
       const month = d.toLocaleDateString("en-IN", { month: "short" });
 
-      let prefix = "";
-      if (dStr === today) prefix = "Today, ";
-      else if (dStr === tomorrow) prefix = "Tomorrow, ";
-
-      return `${prefix}${dayName} ${dayNum} ${month}`;
+      if (isToday) return `Today, ${dayName} ${dayNum} ${month}`;
+      if (isTomorrow) return `Tomorrow, ${dayName} ${dayNum} ${month}`;
+      return `${dayName}, ${dayNum} ${month}`;
     } catch {
       return dStr;
     }
@@ -99,7 +111,8 @@ export default function BookingFlow() {
 
       const data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "Failed to confirm appointment. Please choose another slot.");
+        setErrorMsg(data.error || "Failed to confirm appointment. That slot may have just been booked.");
+        loadSlots();
       } else {
         setBookingSuccess({
           ...data,
@@ -113,7 +126,7 @@ export default function BookingFlow() {
         loadSlots();
       }
     } catch (err) {
-      setErrorMsg("Network error. Please verify your connection.");
+      setErrorMsg("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
@@ -145,6 +158,10 @@ export default function BookingFlow() {
               <span className="font-mono font-bold text-teal">
                 #{bookingSuccess.appointmentId ? bookingSuccess.appointmentId.slice(-6).toUpperCase() : "CONFIRMED"}
               </span>
+            </div>
+            <div className="flex justify-between border-b border-ink/10 pb-2">
+              <span className="text-ink/60">Patient Name:</span>
+              <span className="font-bold text-ink">{bookingSuccess.patientName || sessionUser?.name}</span>
             </div>
             <div className="flex justify-between border-b border-ink/10 pb-2">
               <span className="text-ink/60">Date & Time:</span>
@@ -210,7 +227,7 @@ export default function BookingFlow() {
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-ink mt-2">Book Your Dental Visit</h1>
         <p className="text-sm text-ink/70 mt-1 max-w-xl">
-          Select your dental concern, choose a convenient date, and reserve your chair with Dr. Prachi Khetan.
+          Logged in as <span className="font-semibold text-ink">{sessionUser?.name}</span>. Select your dental concern, choose a convenient date, and reserve your chair.
         </p>
       </div>
 
@@ -275,6 +292,7 @@ export default function BookingFlow() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {dates.map((d) => {
                   const isSelected = d === date;
+                  const label = formatDateLabel(d);
                   return (
                     <button
                       key={d}
@@ -289,7 +307,7 @@ export default function BookingFlow() {
                           : "border-ink/15 hover:border-teal/50 bg-white text-ink"
                       }`}
                     >
-                      <div className="text-xs opacity-75">{formatDateLabel(d).split(", ")[0]}</div>
+                      <div className="text-xs opacity-75">{label.split(", ")[0]}</div>
                       <div className="font-bold text-sm mt-0.5">{d.slice(5)}</div>
                     </button>
                   );

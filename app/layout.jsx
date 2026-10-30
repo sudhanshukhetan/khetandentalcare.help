@@ -2,6 +2,8 @@ import "./globals.css";
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Khetan Dental Care | Dr. Prachi Khetan, Raha, Nagaon",
   description: "Advanced dental clinic in Raha, Nagaon, Assam offering dental implants, painless root canals, scaling, dentures, teeth whitening & orthodontic treatment with Dr. Prachi Khetan.",

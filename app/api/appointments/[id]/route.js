@@ -19,8 +19,9 @@ export async function PATCH(req, { params }) {
   }
 
   // Check authorization: must be admin or the appointment owner
-  if (s.role !== "admin" && String(appt.user) !== String(s.uid)) {
-    return NextResponse.json({ error: "Unauthorized." }, { status: 403 });
+  const appointmentUserId = String(appt.user?._id || appt.user);
+  if (s.role !== "admin" && appointmentUserId !== String(s.uid)) {
+    return NextResponse.json({ error: "Unauthorized to modify this appointment." }, { status: 403 });
   }
 
   // Patients can only cancel their own appointment
@@ -35,9 +36,9 @@ export async function PATCH(req, { params }) {
 
   // If appointment is cancelled, release the time slot so another patient can book
   if (status === "cancelled" && appt.slot) {
-    await TimeSlot.findByIdAndUpdate(appt.slot, { isBooked: false });
+    const slotId = String(appt.slot?._id || appt.slot);
+    await TimeSlot.findByIdAndUpdate(slotId, { isBooked: false });
   }
 
   return NextResponse.json({ ok: true, appointment: updated });
 }
-

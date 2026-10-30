@@ -92,7 +92,7 @@ export default function AdminSlots() {
   async function handleWalkinSubmit(e) {
     e.preventDefault();
     if (!walkinForm.slotId) {
-      alert("Please select a slot for the walk-in patient.");
+      alert("Please select an open slot for the walk-in patient.");
       return;
     }
     try {
@@ -139,7 +139,8 @@ export default function AdminSlots() {
     loadSlots();
   }
 
-  const bookedSlots = slots.filter((s) => s.isBooked && s.appointment);
+  // Ensure all booked slots are captured (even if appointment object is pending population)
+  const bookedSlots = slots.filter((s) => s.isBooked);
   const openSlots = slots.filter((s) => !s.isBooked);
 
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -154,7 +155,8 @@ export default function AdminSlots() {
       const patientName = s.appointment?.user?.name?.toLowerCase() || "";
       const patientPhone = s.appointment?.user?.phone || "";
       const reason = s.appointment?.reason?.toLowerCase() || "";
-      return patientName.includes(q) || patientPhone.includes(q) || reason.includes(q);
+      const treatment = s.appointment?.treatment?.toLowerCase() || "";
+      return patientName.includes(q) || patientPhone.includes(q) || reason.includes(q) || treatment.includes(q);
     }
     return true;
   });
@@ -240,7 +242,7 @@ export default function AdminSlots() {
           <div className="text-2xl font-black text-ink mt-1">{openSlots.length}</div>
         </div>
         <div className="bg-mist/70 p-4 rounded-xl border border-mist">
-          <span className="text-xs text-ink/60 font-medium">SMS / WhatsApp Alert</span>
+          <span className="text-xs text-ink/60 font-medium">SMS & OTP System</span>
           <div className="text-xs font-bold text-emerald-700 mt-2 flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Active
           </div>
@@ -256,10 +258,10 @@ export default function AdminSlots() {
             <div className="flex flex-wrap items-center gap-3">
               <input
                 type="text"
-                placeholder="Search patient name, phone..."
+                placeholder="Search patient name, phone, treatment..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={`${inputClass} w-52`}
+                className={`${inputClass} w-60`}
               />
               <select
                 value={filterDate}
@@ -293,6 +295,8 @@ export default function AdminSlots() {
                   {filteredAppointments.map((s) => {
                     const appt = s.appointment;
                     const isToday = s.date === todayStr;
+                    const patientName = appt?.user?.name || "Booked Patient";
+                    const patientPhone = appt?.user?.phone || "";
 
                     return (
                       <tr key={s._id} className={`hover:bg-mist/30 transition-colors ${isToday ? "bg-teal/5" : ""}`}>
@@ -307,23 +311,27 @@ export default function AdminSlots() {
                         </td>
 
                         <td className="px-3">
-                          <div className="font-semibold text-ink">{appt?.user?.name || "Patient"}</div>
-                          <div className="flex items-center gap-2 mt-1">
-                            <a
-                              href={`tel:${appt?.user?.phone}`}
-                              className="text-xs text-teal font-medium hover:underline"
-                            >
-                              📞 {appt?.user?.phone}
-                            </a>
-                            <a
-                              href={`https://wa.me/91${appt?.user?.phone}?text=Hello%20${encodeURIComponent(appt?.user?.name || "")},%20regarding%20your%20appointment%20with%20Dr.%20Prachi%20Khetan%20on%20${s.date}%20at%20${s.time}...`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200"
-                            >
-                              WhatsApp
-                            </a>
-                          </div>
+                          <div className="font-semibold text-ink">{patientName}</div>
+                          {patientPhone ? (
+                            <div className="flex items-center gap-2 mt-1">
+                              <a
+                                href={`tel:${patientPhone}`}
+                                className="text-xs text-teal font-medium hover:underline"
+                              >
+                                📞 {patientPhone}
+                              </a>
+                              <a
+                                href={`https://wa.me/91${patientPhone}?text=Hello%20${encodeURIComponent(patientName)},%20regarding%20your%20appointment%20with%20Dr.%20Prachi%20Khetan%20on%20${s.date}%20at%20${s.time}...`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200"
+                              >
+                                WhatsApp
+                              </a>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-ink/40 italic">Direct Booking</span>
+                          )}
                         </td>
 
                         <td className="px-3 max-w-xs">
@@ -350,7 +358,7 @@ export default function AdminSlots() {
                         </td>
 
                         <td className="px-3 text-right space-x-1.5">
-                          {appt?.status !== "completed" && (
+                          {appt?._id && appt?.status !== "completed" && (
                             <button
                               onClick={() => updateAppointmentStatus(appt._id, "completed")}
                               className="text-xs px-2.5 py-1 rounded bg-teal text-white hover:bg-teal/90 font-medium"
@@ -359,7 +367,7 @@ export default function AdminSlots() {
                               Complete
                             </button>
                           )}
-                          {appt?.status !== "cancelled" && (
+                          {appt?._id && appt?.status !== "cancelled" && (
                             <button
                               onClick={() => updateAppointmentStatus(appt._id, "cancelled")}
                               className="text-xs px-2.5 py-1 rounded border border-gum text-gum hover:bg-gum/10 font-medium"
@@ -385,7 +393,7 @@ export default function AdminSlots() {
           <div>
             <h2 className="text-xl font-bold text-ink">Generate Consultation Time Slots</h2>
             <p className="text-sm text-ink/70 mt-1">
-              Quickly create slots for single or multiple consecutive days. Default timings automatically exclude lunch break (1:30 PM - 3:30 PM).
+              Quickly create slots for single or multiple consecutive days. Automatically skips duplicates.
             </p>
           </div>
 
@@ -503,7 +511,6 @@ export default function AdminSlots() {
                 type="tel"
                 placeholder="10-digit mobile number"
                 required
-                pattern="^[6-9]\d{9}$"
                 className={`${inputClass} w-full`}
                 value={walkinForm.phone}
                 onChange={(e) => setWalkinForm({ ...walkinForm, phone: e.target.value })}
@@ -519,7 +526,7 @@ export default function AdminSlots() {
                 onChange={(e) => setWalkinForm({ ...walkinForm, slotId: e.target.value })}
               >
                 <option value="">-- Choose an open slot --</option>
-                {openSlots.slice(0, 40).map((s) => (
+                {openSlots.slice(0, 50).map((s) => (
                   <option key={s._id} value={s._id}>
                     {s.date} at {s.time}
                   </option>
