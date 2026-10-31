@@ -14,6 +14,7 @@ export default function Navbar({ session }) {
   }, [pathname]);
 
   const isLoginPage = pathname === "/login";
+  const isBookPage = pathname === "/book";
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-mist">
@@ -61,8 +62,8 @@ export default function Navbar({ session }) {
             Contact
           </Link>
 
-          {/* Authenticated State: Admin */}
-          {session?.role === "admin" && (
+          {/* Authenticated State: Host / Admin */}
+          {session?.role === "admin" ? (
             <div className="flex items-center gap-3">
               <Link
                 href="/admin"
@@ -77,49 +78,27 @@ export default function Navbar({ session }) {
                 Log out
               </a>
             </div>
-          )}
-
-          {/* Authenticated State: Patient */}
-          {session?.role === "patient" && (
-            <div className="flex items-center gap-3">
-              <Link
-                href="/my-appointments"
-                className="text-ink/80 hover:text-teal transition-colors"
-              >
-                My Appointments
-              </Link>
-              <Link
-                href="/book"
-                className="px-3.5 py-1.5 rounded-md bg-teal text-white font-semibold hover:bg-teal/90 transition-colors shadow-sm"
-              >
-                Book Visit
-              </Link>
-              <a
-                href="/api/auth/logout"
-                className="text-ink/60 hover:text-gum transition-colors text-xs font-semibold"
-              >
-                Log out
-              </a>
-            </div>
-          )}
-
-          {/* Unauthenticated State */}
-          {!session && (
+          ) : (
+            /* Public Visitors: Patient Direct Booking & Host Login */
             <div className="flex items-center gap-3">
               {!isLoginPage && (
                 <Link
                   href="/login"
-                  className="text-ink/80 hover:text-teal transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold text-ink/75 hover:text-teal border border-ink/20 rounded-md hover:bg-mist transition-colors"
+                  title="Host & Doctor Administration Login"
                 >
-                  Log in
+                  Host Login
                 </Link>
               )}
-              <Link
-                href="/book"
-                className="px-3.5 py-1.5 rounded-md bg-ink text-white font-semibold hover:bg-ink/90 transition-colors shadow-sm"
-              >
-                Book Appointment
-              </Link>
+              {!isBookPage && (
+                <Link
+                  href="/book"
+                  className="px-3.5 py-1.5 rounded-md bg-teal text-white font-semibold text-xs hover:bg-teal/90 transition-colors shadow-sm flex items-center gap-1.5"
+                >
+                  <span>Book as Patient</span>
+                  <span className="text-[10px] bg-white/20 px-1 py-0.2 rounded font-normal">No Login</span>
+                </Link>
+              )}
             </div>
           )}
         </nav>
@@ -147,7 +126,7 @@ export default function Navbar({ session }) {
         </div>
       </div>
 
-      {/* Responsive Mobile Navigation Drawer (320px – 480px) */}
+      {/* Responsive Mobile Navigation Drawer */}
       {isOpen && (
         <div
           id="mobile-nav"
@@ -177,7 +156,7 @@ export default function Navbar({ session }) {
             </Link>
 
             <div className="pt-2 border-t border-mist space-y-2">
-              {session?.role === "admin" && (
+              {session?.role === "admin" ? (
                 <>
                   <Link
                     href="/admin"
@@ -193,51 +172,24 @@ export default function Navbar({ session }) {
                     Log out
                   </a>
                 </>
-              )}
-
-              {session?.role === "patient" && (
-                <>
-                  <Link
-                    href="/my-appointments"
-                    onClick={() => setIsOpen(false)}
-                    className="block px-3 py-2 rounded-lg text-ink/80 hover:bg-mist font-semibold"
-                  >
-                    My Appointments
-                  </Link>
+              ) : (
+                <div className="space-y-2 pt-1">
                   <Link
                     href="/book"
                     onClick={() => setIsOpen(false)}
-                    className="block px-3 py-2.5 rounded-lg bg-teal text-white font-bold text-center shadow-sm"
+                    className="block px-3 py-2.5 rounded-lg bg-teal text-white font-bold text-center shadow-sm hover:bg-teal/90 text-sm"
                   >
-                    Book Visit
+                    Book as Patient (No Login Required)
                   </Link>
-                  <a
-                    href="/api/auth/logout"
-                    className="block px-3 py-2 rounded-lg text-gum font-semibold hover:bg-gum/10 text-xs"
-                  >
-                    Log out
-                  </a>
-                </>
-              )}
-
-              {!session && (
-                <div className="space-y-2 pt-1">
                   {!isLoginPage && (
                     <Link
                       href="/login"
                       onClick={() => setIsOpen(false)}
-                      className="block px-3 py-2 rounded-lg border border-ink/20 text-center font-semibold text-ink hover:bg-mist"
+                      className="block px-3 py-2 rounded-lg border border-ink/20 text-center font-semibold text-ink/80 hover:bg-mist text-xs"
                     >
-                      Log in
+                      Host / Doctor Login (ID & OTP)
                     </Link>
                   )}
-                  <Link
-                    href="/book"
-                    onClick={() => setIsOpen(false)}
-                    className="block px-3 py-2.5 rounded-lg bg-ink text-white font-bold text-center shadow-sm hover:bg-ink/90"
-                  >
-                    Book Appointment
-                  </Link>
                 </div>
               )}
             </div>
@@ -247,4 +199,3 @@ export default function Navbar({ session }) {
     </header>
   );
 }
-

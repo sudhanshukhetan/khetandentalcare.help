@@ -24,18 +24,72 @@ export default function Home() {
               From painless root canals and tooth-saving restorations to permanent dental implants and orthodontic smile alignment—experience compassionate dental care with upfront, transparent prices.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/book"
-                className="px-8 py-3.5 rounded-lg bg-ink text-white font-bold text-base hover:bg-ink/90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
-              >
-                Book Appointment Online
-              </Link>
+            {/* PORTAL SELECTION: PATIENT DIRECT BOOKING VS HOST LOGIN */}
+            <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl">
+              {/* Option A: Patient Direct Booking (No Login) */}
+              <div className="p-5 rounded-2xl bg-white border-2 border-teal/30 shadow-sm hover:border-teal hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-teal bg-teal/10 px-2.5 py-0.5 rounded-full">
+                      No Login Required
+                    </span>
+                    <span className="text-xl" aria-hidden="true">🦷</span>
+                  </div>
+                  <h3 className="font-extrabold text-ink text-lg">Patient Booking</h3>
+                  <p className="text-xs text-ink/70 mt-1 leading-relaxed">
+                    Direct appointment booking in 30 seconds. Choose your time slot and confirm instantly without creating an account.
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <Link
+                    href="/book"
+                    className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-4 rounded-xl bg-teal text-white text-xs font-bold hover:bg-teal/90 transition-all shadow-sm"
+                  >
+                    <span>Book Appointment Online →</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Option B: Host / Doctor Portal (Requires ID, Password & OTP) */}
+              <div className="p-5 rounded-2xl bg-white/90 border border-ink/15 shadow-sm hover:border-ink/40 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-ink/70 bg-mist px-2.5 py-0.5 rounded-full">
+                      ID + Password + OTP
+                    </span>
+                    <span className="text-xl" aria-hidden="true">🩺</span>
+                  </div>
+                  <h3 className="font-extrabold text-ink text-lg">Host / Doctor Portal</h3>
+                  <p className="text-xs text-ink/70 mt-1 leading-relaxed">
+                    Dedicated clinic portal for Dr. Prachi Khetan & staff to manage daily schedules, walk-ins, and appointments.
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-4 rounded-xl bg-ink text-white text-xs font-bold hover:bg-ink/90 transition-all shadow-sm"
+                  >
+                    <span>Host / Doctor Login →</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Clinic Contact Bar */}
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-ink/80">
               <a
                 href="tel:9101616156"
-                className="px-6 py-3.5 rounded-lg bg-white border border-ink/20 text-ink font-bold text-base hover:bg-mist transition-all flex items-center gap-2"
+                className="px-4 py-2 rounded-lg bg-white border border-ink/20 text-ink hover:bg-mist transition-all flex items-center gap-2 shadow-xs"
               >
-                <span aria-hidden="true">📞</span> Call 9101616156
+                <span aria-hidden="true">📞</span> Urgent Tooth Pain? Call Hotline: 9101616156
+              </a>
+              <a
+                href="https://wa.me/919101616156?text=Hello%20Dr.%20Prachi,%20I%20would%20like%20to%20inquire%20about%20dental%20treatment."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-700 hover:underline flex items-center gap-1"
+              >
+                <span>💬 WhatsApp Reception</span>
               </a>
             </div>
 

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import TimeSlot from "@/models/TimeSlot";
 import Appointment from "@/models/Appointment";
@@ -10,28 +11,57 @@ import { validatePhone } from "@/lib/validation";
 export async function POST(req) {
   try {
     const s = await getSession();
-    if (!s || s.role !== "patient") {
-      return NextResponse.json({ error: "Please log in as a patient to book an appointment." }, { status: 401 });
-    }
-
-    const body = await req.json();
-    const { slotId, reason = "", treatment = "General Consultation" } = body;
+    const body = await req.json().catch(() => ({}));
+    let { slotId, name = "", phone = "", reason = "", treatment = "General Consultation" } = body;
 
     if (!slotId) {
       return NextResponse.json({ error: "Please select an appointment time slot." }, { status: 400 });
     }
 
-    await db();
-
-    const user = await User.findById(s.uid);
-    if (!user) {
-      return NextResponse.json({ error: "Patient account not found. Please log in again." }, { status: 404 });
+    // Default to session attributes if patient is already logged in
+    if (s && s.role === "patient") {
+      name = name.trim() || s.name || "Patient";
+      phone = phone.trim() || s.phone || "";
     }
 
-    // Verify patient's phone is valid
-    const phoneCheck = validatePhone(user.phone);
-    if (!phoneCheck.isValid) {
-      return NextResponse.json({ error: "Please update your profile with a valid 10-digit mobile number." }, { status: 400 });
+    name = String(name).trim();
+    if (!name || name.length < 2) {
+      return NextResponse.json({ error: "Please enter your full name (at least 2 characters)." }, { status: 400 });
+    }
+
+    const phoneValidation = validatePhone(phone);
+    if (!phoneValidation.isValid) {
+      return NextResponse.json({ error: phoneValidation.error }, { status: 400 });
+    }
+    const cleanPhone = phoneValidation.cleanPhone;
+
+    await db();
+
+    // Find or create patient user record
+    let user = null;
+    if (s && s.uid && s.role === "patient") {
+      user = await User.findById(s.uid);
+    }
+    if (!user) {
+      user = await User.findOne({ phone: cleanPhone });
+    }
+
+    if (!user) {
+      const dummyHash = await bcrypt.hash(`Patient@${cleanPhone.slice(-4)}`, 10);
+      user = await User.create({
+        name,
+        email: `${cleanPhone}@patient.khetandental.com`,
+        phone: cleanPhone,
+        passwordHash: dummyHash,
+        role: "patient",
+      });
+    } else if (name && user.name !== name) {
+      user.name = name;
+      if (typeof user.save === "function") {
+        await user.save();
+      } else {
+        await User.findByIdAndUpdate(user._id, { name });
+      }
     }
 
     // Atomic claim: only one request can flip isBooked false -> true (prevents double booking)
@@ -66,6 +96,7 @@ export async function POST(req) {
       date: slot.date,
       time: slot.time,
       patientName: user.name,
+      patientPhone: user.phone,
       treatment,
     });
   } catch (err) {

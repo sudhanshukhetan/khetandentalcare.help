@@ -20,19 +20,18 @@ export async function middleware(req) {
   }
 
   const isAdminRoute = pathname.startsWith("/admin") || pathname.startsWith("/doctor");
-  const isPatientRoute = pathname.startsWith("/my-appointments") || pathname.startsWith("/book");
   const isDashboardRoute = pathname.startsWith("/dashboard");
   const isLoginPage = pathname === "/login";
 
-  // 1. Unauthenticated users trying to access protected routes -> redirect to /login
+  // 1. Unauthenticated users trying to access host/admin routes -> redirect to /login
   if (!session) {
-    if (isAdminRoute || isPatientRoute || isDashboardRoute) {
+    if (isAdminRoute || isDashboardRoute) {
       const loginUrl = new URL("/login", req.url);
       loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);
     }
   } else {
-    // 2. Already-authenticated users accessing /login -> redirect to their portal
+    // 2. Already-authenticated host accessing /login -> redirect to /admin
     if (isLoginPage) {
       if (session.role === "admin") {
         return NextResponse.redirect(new URL("/admin", req.url));
@@ -40,7 +39,7 @@ export async function middleware(req) {
       return NextResponse.redirect(new URL("/book", req.url));
     }
 
-    // 3. Role-Based Access Control (RBAC): Patients cannot access admin or doctor routes
+    // 3. Role-Based Access Control: Non-admins cannot access admin/doctor routes
     if (session.role !== "admin" && isAdminRoute) {
       return NextResponse.redirect(new URL("/book", req.url));
     }
@@ -50,7 +49,7 @@ export async function middleware(req) {
       if (session.role === "admin") {
         return NextResponse.redirect(new URL("/admin", req.url));
       }
-      return NextResponse.redirect(new URL("/my-appointments", req.url));
+      return NextResponse.redirect(new URL("/book", req.url));
     }
   }
 
@@ -62,9 +61,6 @@ export const config = {
     "/admin/:path*",
     "/doctor/:path*",
     "/dashboard/:path*",
-    "/my-appointments/:path*",
-    "/book/:path*",
     "/login",
   ],
 };
-

@@ -9,7 +9,9 @@ export const metadata = {
 
 export default async function Book() {
   const s = await getSession();
-  if (!s) redirect("/login");
-  if (s.role === "admin") redirect("/admin");
-  return <BookingFlow sessionUser={s} />;
+  // If doctor/host is currently logged in, route to admin dashboard
+  if (s?.role === "admin") redirect("/admin");
+
+  // Patients book directly without login
+  return <BookingFlow sessionUser={s || null} />;
 }
