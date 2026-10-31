@@ -14,7 +14,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal/10 text-teal text-xs font-bold uppercase tracking-wider mb-6">
-              <span className="w-2 h-2 rounded-full bg-teal animate-pulse" aria-hidden="true"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-teal animate-pulse" aria-hidden="true"></span>
               Dr. Prachi Khetan, BDS · Raha New Charali
             </div>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-ink tracking-tight leading-[1.05]">
@@ -50,12 +50,12 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Option B: Host / Doctor Portal (Requires ID, Password & OTP) */}
+              {/* Option B: Host / Doctor Portal (Requires ID & Password) */}
               <div className="p-5 rounded-2xl bg-white/90 border border-ink/15 shadow-sm hover:border-ink/40 transition-all flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-ink/70 bg-mist px-2.5 py-0.5 rounded-full">
-                      ID + Password + OTP
+                      Doctor ID + Password
                     </span>
                     <span className="text-xl" aria-hidden="true">🩺</span>
                   </div>
@@ -230,7 +230,7 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center font-bold text-sm">
               01
             </div>
-            <h4 className="font-bold text-ink text-lg">1. Thorough Consultation</h4>
+            <h4 className="font-bold text-ink text-lg">Thorough Consultation</h4>
             <p className="text-xs sm:text-sm text-ink/75 leading-relaxed">
               Dr. Prachi listens carefully to your concerns, conducts a gentle oral examination, and identifies root causes of tooth sensitivity or pain.
             </p>
@@ -240,7 +240,7 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center font-bold text-sm">
               02
             </div>
-            <h4 className="font-bold text-ink text-lg">2. Transparent Treatment Plan</h4>
+            <h4 className="font-bold text-ink text-lg">Transparent Treatment Plan</h4>
             <p className="text-xs sm:text-sm text-ink/75 leading-relaxed">
               We present clinical options clearly with upfront costs, recovery timelines, and alternatives so you can make confident, informed decisions.
             </p>
@@ -250,7 +250,7 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-teal/10 text-teal flex items-center justify-center font-bold text-sm">
               03
             </div>
-            <h4 className="font-bold text-ink text-lg">3. Gentle Care & Follow-Up</h4>
+            <h4 className="font-bold text-ink text-lg">Gentle Care & Follow-Up</h4>
             <p className="text-xs sm:text-sm text-ink/75 leading-relaxed">
               Experience comfortable procedures with modern numbing techniques and clear post-treatment guidance to maintain optimal long-term oral health.
             </p>
@@ -341,7 +341,7 @@ export default function Home() {
             <Link href="/#services" className="hover:text-teal">Services & Pricing</Link>
             <Link href="/#doctor" className="hover:text-teal">About Doctor</Link>
             <Link href="/book" className="hover:text-teal">Book Visit</Link>
-            <Link href="/login" className="hover:text-teal">Patient & Staff Login</Link>
+            <Link href="/login" className="hover:text-teal">Doctor & Staff Login</Link>
           </div>
 
           <div className="text-xs text-ink/50">

@@ -24,6 +24,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Please enter your email or 10-digit mobile number." }, { status: 400 });
     }
 
+    const doctorId = (process.env.DOCTOR_ID || process.env.ADMIN_EMAIL || "dr.prachikhetan.bds18@gmail.com").toLowerCase().trim();
     const adminEmail = (process.env.ADMIN_EMAIL || "dr.prachikhetan.bds18@gmail.com").toLowerCase().trim();
     let adminHash = (process.env.ADMIN_PASSWORD_HASH || "").replace(/^['"]|['"]$/g, "");
     if (!adminHash.startsWith("$2")) {
@@ -36,7 +37,7 @@ export async function POST(req) {
     // ==========================================
     // 1. HOST / CLINIC ADMIN LOGIN FLOW
     // ==========================================
-    if (inputLower === adminEmail || rawInput === hostPhone) {
+    if (inputLower === doctorId || inputLower === adminEmail || rawInput === hostPhone) {
       // Stage 2: Host Submits 5-Digit OTP
       if (otp) {
         const verifyResult = verifyHostOtp(adminEmail, otp);

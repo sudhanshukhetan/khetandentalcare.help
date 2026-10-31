@@ -8,3 +8,4 @@ export async function GET() {
   if (!s) return NextResponse.json({ role: null });
   return NextResponse.json({ role: s.role, name: s.name });
 }
+

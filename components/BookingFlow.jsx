@@ -16,15 +16,15 @@ const TREATMENTS = [
   { id: "denture", name: "Complete / Partial Dentures (CD/RPD)", fee: "Case Dependent" },
 ];
 
-export default function BookingFlow({ sessionUser }) {
-  const [slots, setSlots] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [date, setDate] = useState("");
+export default function BookingFlow({ sessionUser, initialSlots = [] }) {
+  const [slots, setSlots] = useState(initialSlots);
+  const [loading, setLoading] = useState(initialSlots.length === 0);
+  const [date, setDate] = useState(initialSlots[0]?.date || "");
   const [picked, setPicked] = useState(null);
   const [treatment, setTreatment] = useState(TREATMENTS[0].name);
   const [reason, setReason] = useState("");
 
-  // Patient contact details (direct booking without login)
+  // Patient contact details (clean direct booking without mock data)
   const [patientName, setPatientName] = useState(sessionUser?.name || "");
   const [patientPhone, setPatientPhone] = useState(sessionUser?.phone || "");
   const [fieldErrors, setFieldErrors] = useState({});

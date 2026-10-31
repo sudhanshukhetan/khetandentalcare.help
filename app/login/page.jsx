@@ -35,7 +35,7 @@ export default function Login() {
     setErr("");
   };
 
-  // Stage 1: Submit Host Credentials (ID & Password)
+  // Stage 1: Submit Host Credentials (Doctor ID & Password)
   async function submitHostAuth(e) {
     e.preventDefault();
     setErr("");
@@ -157,7 +157,7 @@ export default function Login() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md space-y-6">
-        {/* PATIENT NOTICE / QUICK LINK (NO LOGIN REQUIRED) */}
+        {/* PATIENT NOTICE / DIRECT BOOKING CALLOUT */}
         <div className="bg-gradient-to-r from-teal/10 via-teal/5 to-white border border-teal/30 rounded-2xl p-4 sm:p-5 text-center shadow-sm">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal text-white text-[11px] font-bold uppercase tracking-wider mb-2">
             <span>🦷</span> Patient Portal
@@ -280,9 +280,9 @@ export default function Login() {
             </div>
           ) : (
             /* ========================================================= */
-            /* VIEW 2: HOST / DOCTOR ID & PASSWORD FORM */
+            /* VIEW 2: HOST / DOCTOR ID & PASSWORD FORM (IMMEDIATE SSR) */
             /* ========================================================= */
-            <>
+            <div>
               <div className="mb-6 text-center">
                 <div
                   className="w-12 h-12 bg-teal/10 text-teal rounded-full flex items-center justify-center text-xl mx-auto mb-2.5 font-bold"
@@ -311,7 +311,7 @@ export default function Login() {
                 </div>
               )}
 
-              <form onSubmit={submitHostAuth} className="space-y-4" noValidate>
+              <form onSubmit={submitHostAuth} method="POST" action="/api/auth/login" className="space-y-4" noValidate>
                 <div>
                   <label htmlFor="identifier" className="block text-xs font-bold text-ink mb-1">
                     Doctor ID / Email Address
@@ -322,7 +322,7 @@ export default function Login() {
                     type="text"
                     autoComplete="username"
                     className={inputStyle(fieldErrors.identifier)}
-                    placeholder="dr.prachikhetan.bds18@gmail.com"
+                    placeholder="Enter Doctor ID or registered email"
                     value={identifier}
                     onChange={handleIdentifierChange}
                     disabled={loading}
@@ -388,7 +388,7 @@ export default function Login() {
                   ← Back to Homepage
                 </Link>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
