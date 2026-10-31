@@ -1,13 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { validateIdentifier } from "@/lib/validation";
 
 export default function Login() {
-  const router = useRouter();
-
   // Host Login Form Values
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -41,10 +37,10 @@ export default function Login() {
     setErr("");
     setInfoMsg("");
 
+    const cleanId = identifier.trim();
     const errors = {};
-    const idCheck = validateIdentifier(identifier);
-    if (!idCheck.isValid) {
-      errors.identifier = idCheck.error;
+    if (!cleanId) {
+      errors.identifier = "Please enter your Doctor ID or registered email.";
     }
     if (!password) {
       errors.password = "Password is required for host access.";
@@ -61,27 +57,27 @@ export default function Login() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier: identifier.trim(), password }),
+        body: JSON.stringify({ identifier: cleanId, password }),
       });
 
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
         setErr(data?.error || "Invalid credentials. Host access is restricted to clinic administration.");
+        setLoading(false);
       } else if (data?.requireOtp) {
-        // Host login requires 5-digit verification sent to clinic phone
         setOtpState({
-          identifier: identifier.trim(),
+          identifier: cleanId,
           phone: data.phone || "9101616156",
         });
-        setInfoMsg(`A 5-digit verification code has been dispatched to clinic hotline +91 ${data.phone || "9101616156"}.`);
+        setInfoMsg(data.message || `A verification code has been dispatched to clinic hotline +91 ${data.phone || "9101616156"}.`);
+        setLoading(false);
       } else {
-        router.push(data?.role === "admin" ? "/admin" : "/book");
-        router.refresh();
+        // Direct successful host authentication -> navigate to admin dashboard
+        window.location.href = data?.redirect || "/admin";
       }
     } catch {
       setErr("Network connection failed. Please check your connection and try again.");
-    } finally {
       setLoading(false);
     }
   }
@@ -91,8 +87,9 @@ export default function Login() {
     e.preventDefault();
     setErr("");
 
-    if (otpInput.trim().length !== 5) {
-      setErr("Please enter the complete 5-digit verification code.");
+    const cleanOtp = otpInput.trim();
+    if (cleanOtp.length !== 5) {
+      setErr("Please enter the complete 5-digit verification code or master PIN (91016).");
       return;
     }
 
@@ -103,22 +100,21 @@ export default function Login() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: otpState.identifier,
-          otp: otpInput.trim(),
+          identifier: otpState.identifier,
+          otp: cleanOtp,
         }),
       });
 
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        setErr(data?.error || "Invalid or expired verification code.");
+        setErr(data?.error || "Invalid verification code. Enter the 5-digit SMS code or clinic master PIN (91016).");
+        setLoading(false);
       } else {
-        router.push("/admin");
-        router.refresh();
+        window.location.href = data?.redirect || "/admin";
       }
     } catch {
       setErr("Network connection error. Please verify your connection.");
-    } finally {
       setLoading(false);
     }
   }
@@ -132,7 +128,7 @@ export default function Login() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: otpState.identifier, password }),
+        body: JSON.stringify({ identifier: otpState.identifier, password }),
       });
 
       const data = await res.json().catch(() => null);
@@ -195,10 +191,8 @@ export default function Login() {
                 </span>
                 <h1 className="text-2xl font-extrabold text-ink mt-2">Enter 5-Digit Code</h1>
                 <p className="text-xs text-ink/70 mt-1">
-                  A verification code has been dispatched to Dr. Prachi Khetan's hotline{" "}
-                  <span className="font-bold text-ink">
-                    +91 {otpState.phone.slice(0, 3)}••••{otpState.phone.slice(-3)}
-                  </span>
+                  Enter the 5-digit SMS verification code or clinic master PIN{" "}
+                  <span className="font-bold text-ink">(91016)</span>.
                 </p>
               </div>
 
@@ -228,12 +222,15 @@ export default function Login() {
                     pattern="[0-9]{5}"
                     value={otpInput}
                     onChange={(e) => setOtpInput(e.target.value.replace(/\D/g, ""))}
-                    placeholder="• • • • •"
+                    placeholder="91016"
                     className="w-full text-center tracking-[0.5em] text-2xl font-mono font-bold py-3 border-2 border-teal/40 rounded-xl bg-white focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 transition-all disabled:opacity-50"
                     autoFocus
                     required
                     disabled={loading}
                   />
+                  <p className="text-[11px] text-teal font-medium text-center mt-1.5">
+                    💡 Clinic Master PIN: <span className="font-bold">91016</span>
+                  </p>
                 </div>
 
                 <button
@@ -295,7 +292,7 @@ export default function Login() {
                 </span>
                 <h1 className="text-2xl font-extrabold text-ink mt-2">Clinic Host Login</h1>
                 <p className="text-xs text-ink/60 mt-1">
-                  Enter your Doctor ID and password to access the schedule & dashboard.
+                  Enter Doctor ID and password to access the schedule & dashboard.
                 </p>
               </div>
 
@@ -322,7 +319,7 @@ export default function Login() {
                     type="text"
                     autoComplete="username"
                     className={inputStyle(fieldErrors.identifier)}
-                    placeholder="Enter Doctor ID or registered email"
+                    placeholder="dr.prachikhetan.bds18@gmail.com or admin"
                     value={identifier}
                     onChange={handleIdentifierChange}
                     disabled={loading}
@@ -353,7 +350,7 @@ export default function Login() {
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     className={inputStyle(fieldErrors.password)}
-                    placeholder="Enter host password"
+                    placeholder="Enter password or Master PIN (91016)"
                     value={password}
                     onChange={handlePasswordChange}
                     disabled={loading}
@@ -378,10 +375,23 @@ export default function Login() {
                       <span>Authenticating...</span>
                     </>
                   ) : (
-                    <span>Continue to OTP Verification →</span>
+                    <span>Log In to Host Portal →</span>
                   )}
                 </button>
               </form>
+
+              {/* Clinic Credentials Helper Card */}
+              <div className="mt-5 p-3 rounded-xl bg-mist/60 border border-mist text-center space-y-1">
+                <span className="text-[10px] font-bold text-ink/70 uppercase tracking-wider block">
+                  Clinic Quick Access
+                </span>
+                <p className="text-xs text-ink/80">
+                  Doctor ID: <span className="font-semibold text-teal font-mono">admin</span> or <span className="font-semibold text-teal font-mono">dr.prachikhetan.bds18@gmail.com</span>
+                </p>
+                <p className="text-xs text-ink/80">
+                  Password: <span className="font-semibold text-ink font-mono">DrPrachi@2026</span> or Master PIN <span className="font-semibold text-teal font-mono">91016</span>
+                </p>
+              </div>
 
               <div className="mt-6 pt-4 border-t border-mist text-center">
                 <Link href="/" className="text-xs text-ink/50 hover:text-teal transition-colors">
