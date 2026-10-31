@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar({ session }) {
+export default function Navbar({ initialSession = null }) {
+  const [session, setSession] = useState(initialSession);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -12,6 +13,24 @@ export default function Navbar({ session }) {
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  // Non-blocking client check for logged-in admin session
+  useEffect(() => {
+    if (!initialSession) {
+      let isMounted = true;
+      fetch("/api/auth/me")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (isMounted && data?.role) {
+            setSession(data);
+          }
+        })
+        .catch(() => {});
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [initialSession]);
 
   const isLoginPage = pathname === "/login";
   const isBookPage = pathname === "/book";

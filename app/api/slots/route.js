@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import TimeSlot from "@/models/TimeSlot";
 import Appointment from "@/models/Appointment";
-import { getSession, requireAdmin } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 
 // Helper: Calculate current date and time in India Standard Time (IST, UTC+5:30)
 function getIndiaTime() {
@@ -32,7 +32,12 @@ export async function GET(req) {
       slots.map(x => ({
         ...x,
         appointment: bySlot[String(x._id)] || null,
-      }))
+      })),
+      {
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
     );
   }
 
@@ -49,49 +54,68 @@ export async function GET(req) {
     return true;
   });
 
-  return NextResponse.json(availableSlots);
+  return NextResponse.json(availableSlots, {
+    headers: {
+      "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
+    },
+  });
 }
 
-// POST: Admin generates slots (single day, multi-day, or specific slots)
+// POST: Generate slots for multiple dates (Admin only)
 export async function POST(req) {
-  if (!(await requireAdmin())) {
-    return NextResponse.json({ error: "Unauthorized. Admin privileges required." }, { status: 403 });
+  const s = await getSession();
+  if (s?.role !== "admin") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json();
-  const { date, dates = [], start = "10:00", end = "19:00", intervalMin = 30, excludeBreak = true } = body;
+  const {
+    dates = [],
+    date,
+    start = "10:00",
+    end = "19:00",
+    intervalMin = 30,
+    excludeBreak = true,
+  } = await req.json();
 
-  const targetDates = dates.length ? dates : (date ? [date] : []);
-  if (!targetDates.length) {
-    return NextResponse.json({ error: "Please provide a valid date." }, { status: 400 });
-  }
+  const targetDates = Array.isArray(dates) && dates.length > 0 ? dates : date ? [date] : [];
 
-  const toMin = t => +t.slice(0, 2) * 60 + +t.slice(3, 5);
-  const fmt = m => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
-
-  const startM = toMin(start);
-  const endM = toMin(end);
-  const step = Math.max(10, +intervalMin || 30);
-
-  const docs = [];
-  for (const d of targetDates) {
-    for (let m = startM; m + step <= endM; m += step) {
-      // Skip lunch break (1:30 PM - 3:30 PM = 810 to 930) if requested
-      if (excludeBreak && m >= 810 && m < 930) {
-        continue;
-      }
-      docs.push({ date: d, time: fmt(m) });
-    }
+  if (targetDates.length === 0) {
+    return NextResponse.json({ error: "Please provide at least one valid date." }, { status: 400 });
   }
 
   await db();
-  let createdCount = 0;
-  try {
-    const result = await TimeSlot.insertMany(docs, { ordered: false });
-    createdCount = typeof result === "number" ? result : (result?.length || docs.length);
-  } catch (e) {
-    // Skip duplicate slots gracefully
+
+  const toMins = (t) => {
+    const [h, m] = t.split(":").map(Number);
+    return h * 60 + m;
+  };
+  const toStr = (m) => {
+    const hh = String(Math.floor(m / 60)).padStart(2, "0");
+    const mm = String(m % 60).padStart(2, "0");
+    return `${hh}:${mm}`;
+  };
+
+  const startM = toMins(start);
+  const endM = toMins(end);
+
+  const times = [];
+  for (let m = startM; m < endM; m += intervalMin) {
+    // Break 13:30 - 16:00 (Assam clinic standard lunch / afternoon break)
+    if (excludeBreak && m >= toMins("13:30") && m < toMins("16:00")) continue;
+    times.push(toStr(m));
   }
 
-  return NextResponse.json({ ok: true, created: createdCount, totalGenerated: docs.length });
+  let totalCreated = 0;
+  for (const d of targetDates) {
+    for (const t of times) {
+      try {
+        await TimeSlot.create({ date: d, time: t, isBooked: false });
+        totalCreated++;
+      } catch (e) {
+        // Skip duplicate slot combinations
+      }
+    }
+  }
+
+  return NextResponse.json({ ok: true, created: totalCreated });
 }
